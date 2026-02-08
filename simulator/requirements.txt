@@ -1,0 +1,2 @@
+# Requests library for API calls
+requests==2.32.3

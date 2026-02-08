@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Development & Debug Scripts
+check_*.py
+seed_*.py
+debug_*.py
+test_*.py
+consolidate_*.py
+find_*.py
+fix_*.py
+migrate_*.py
+update_*.py
+reset_*.py
+reseed_*.py
+enforce_*.py
+init_db.py
+show_*.py

@@ -1,0 +1,31 @@
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary documentation (keep README.md)
+PART*.md
+*_COMPLETE.md
+*_DOCUMENTATION.md
+*_STATUS.md
+SYSTEM_GUIDE.md
+
+# Environment variables
+.env
+.env.local
+
+# Backup files
+*.bak
+*.backup
+*.tmp
+*.temp
