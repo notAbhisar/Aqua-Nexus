@@ -15,7 +15,13 @@ const StatsPanel = ({ activeContext }) => {
     setLoading(true);
     try {
       const url = activeContext ? `/api/stats?context=${activeContext}` : '/api/stats';
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      });
       setStats(response.data);
     } catch (error) {
       console.error('Error fetching stats:', error);

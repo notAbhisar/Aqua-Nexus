@@ -5,6 +5,7 @@ POST /api/telemetry - Receive sensor data
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
+from datetime import datetime, timedelta, timezone
 
 from .. import schemas, crud, models
 from ..database import get_db
@@ -44,6 +45,22 @@ async def create_telemetry(
     
     # Create telemetry record
     db_telemetry = crud.create_telemetry(db, telemetry)
+    
+    # Validate timestamp is not in the future (clock check)
+    # Compare in UTC by converting the timezone-aware timestamp
+    current_utc = datetime.utcnow().replace(tzinfo=None)
+    telemetry_utc = db_telemetry.timestamp.astimezone(timezone.utc).replace(tzinfo=None)
+    time_diff = (telemetry_utc - current_utc).total_seconds()
+    
+    # Allow 5 minute tolerance for clock skew
+    if time_diff > 300:  # 5 minutes = 300 seconds
+        # Rollback the transaction and reject the telemetry
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"CLOCK SKEW ERROR: Telemetry timestamp is {time_diff/60:.1f} minutes in the future. "
+                   f"System or database clock may be incorrect. Please synchronize server time."
+        )
     
     # Anomaly detection - determine node status based on readings
     new_status = models.NodeStatus.NORMAL

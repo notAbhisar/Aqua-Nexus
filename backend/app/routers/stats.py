@@ -478,7 +478,8 @@ async def get_alerts(
     
     return {
         'alerts': alerts,
-        'count': len(alerts),
+        'count': len(set(alert['node_id'] for alert in alerts)),  # Count unique nodes with alerts
+        'alert_violations': len(alerts),  # Total number of alert violations
         'context': context or 'all',
         'generated_at': datetime.utcnow().isoformat()
     }

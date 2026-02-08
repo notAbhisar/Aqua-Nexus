@@ -14,7 +14,13 @@ const SmartAlertSystem = ({ activeContext = 'urban' }) => {
 
   const fetchAlerts = async () => {
     try {
-      const response = await axios.get(`/api/alerts?context=${activeContext}`);
+      const response = await axios.get(`/api/alerts?context=${activeContext}`, {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      });
       setAlerts(response.data.alerts || []);
     } catch (error) {
       console.error('Error fetching alerts:', error);

@@ -122,14 +122,30 @@ class WaterSimulator:
         - pH: Natural groundwater 7.5-8.0
         - Temperature: Ground temperature stable 15-18°C
         - Turbidity: Variable due to wells 5-15 NTU
+        - Aquifer depth: 60-100 meters (normally), occasional drops
+        - Recharge rate: 8-12 mm/month (normally), occasional drops during drought
         """
+        # Aquifer depth: usually 70-90m, occasionally drops to simulate drought
+        if random.random() < 0.15:  # 15% chance of low aquifer
+            aquifer_depth = random.uniform(50, 65)  # Warning/Critical zone
+        else:
+            aquifer_depth = random.uniform(70, 95)  # Normal
+        
+        # Recharge rate: usually 9-11 mm/month, occasionally drops
+        if random.random() < 0.10:  # 10% chance of low recharge
+            recharge_rate = random.uniform(2, 4)  # Critical
+        else:
+            recharge_rate = random.uniform(8, 12)  # Normal
+        
         return {
             "node_id": node_id,
             "flow_rate": round(random.uniform(5, 15), 2),
             "pressure": round(random.uniform(40, 50), 2),
             "ph_level": round(random.uniform(7.5, 8.0), 2),
             "temperature": round(random.uniform(15, 18), 2),
-            "turbidity": round(random.uniform(5, 15), 2)
+            "turbidity": round(random.uniform(5, 15), 2),
+            "aquifer_depth_m": round(aquifer_depth, 1),
+            "recharge_rate": round(recharge_rate, 2)
         }
     
     def generate_telemetry(self, node_id: int, node_type: str) -> Dict:

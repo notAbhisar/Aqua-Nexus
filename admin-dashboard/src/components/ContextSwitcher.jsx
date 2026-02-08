@@ -18,7 +18,7 @@ const ContextSwitcher = ({ activeContext, onContextChange }) => {
       id: 'industrial',
       label: 'Industrial Auditors',
       description: 'Effluent compliance & violations',
-      icon: 'SETTINGS'
+      icon: 'INDUSTRIAL'
     }
   ];
 

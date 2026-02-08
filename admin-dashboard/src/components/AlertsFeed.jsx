@@ -15,12 +15,31 @@ const AlertsFeed = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
+      const cacheHeaders = {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      };
+      
       const [reportsRes, alertsRes] = await Promise.all([
-        axios.get('/api/reports?limit=10'),
-        axios.get('/api/alerts') // Get all alerts (no context filter for map view)
+        axios.get('/api/reports?limit=10', cacheHeaders),
+        axios.get('/api/alerts', cacheHeaders) // Get all alerts (no context filter for map view)
       ]);
-      setReports(reportsRes.data);
-      setAlerts(alertsRes.data.alerts || []);
+      
+      // Sort reports by created_at (most recent first)
+      const sortedReports = (reportsRes.data || []).sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+      
+      // Sort alerts by timestamp (most recent first)
+      const sortedAlerts = (alertsRes.data.alerts || []).sort(
+        (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+      );
+      
+      setReports(sortedReports);
+      setAlerts(sortedAlerts);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {

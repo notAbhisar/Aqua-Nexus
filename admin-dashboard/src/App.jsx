@@ -28,9 +28,17 @@ function App() {
 
   const fetchData = async () => {
     try {
+      const cacheHeaders = {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      };
+      
       const [statsRes, nodesRes] = await Promise.all([
-        axios.get('/api/stats'),
-        axios.get('/api/nodes/with-telemetry')
+        axios.get('/api/stats', cacheHeaders),
+        axios.get('/api/nodes/with-telemetry', cacheHeaders)
       ]);
       setStats(statsRes.data);
       setNodes(nodesRes.data);
@@ -64,7 +72,7 @@ function App() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold">Aqua Nexus</h1>
-              <p className="text-blue-100">Water Quality Monitoring System - Decision Support Brain</p>
+              <p className="text-blue-100">Unified Water Management System</p>
             </div>
             <div className="flex items-center gap-4">
               <button 
